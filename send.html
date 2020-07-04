@@ -1,0 +1,257 @@
+/**
+ * Copyright 2020 Nemanja Vukmirovic
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
+<script type="text/javascript">
+    RED.nodes.registerType('send',{
+        category: 'minimodem',
+        color: '#ffff00',
+        defaults: {
+            name: {value:""},
+            baudmode: {value:"100"},
+            autocarrier:{value: false},
+            inverted:{value:false},   
+            bandwith:{value:false},       
+            mark:{value:false}, 
+            space:{value:false},
+            startbits:{value:false},
+            stopbits:{value:false},
+            invertstartstop:{value:false},
+            syncbyte:{value:false},
+            quiet:{value:false},
+            samplerate:{value:false},
+            floatsamples:{value:false},
+            sendletternum: {value:false},
+
+            //Declare default values 
+         
+            bandwithval:{value: 100},
+            markval:{value: 1000},
+            spaceval:{value:1000},
+            startbitsval:{value:1},
+            stopbitsval:{value:1},
+            syncbyteval:{value:'0xAA'},
+            samplerateval:{value: 100},
+            endchar:{value:"*"},
+            //Other Variables 
+            repeat:{value:false},
+            repeatdelay:{value: 5000}, //default repeat every 5s 
+            repeatxtimes:{value: 1}, //repeat 2 times
+            
+        },
+        
+        inputs:1,
+        outputs:0,
+        icon: "font-awesome/fa-volume-up",
+        label: function() {
+            return this.name||"send";
+        },
+        oneditprepare: function() {
+
+            $("#node-input-bandwith").on("change", function (e) {
+                if (this.checked) {
+                    $(".bandwith-row").show();
+                }
+                else {
+                    $(".bandwith-row").hide();
+                }                
+            });
+           
+            $("#node-input-mark").on("change", function (e) {
+                if (this.checked) {
+                    $(".mark-row").show();
+                }
+                else {
+                    $(".mark-row").hide();
+                }                
+            });
+            $("#node-input-space").on("change", function (e) {
+                if (this.checked) {
+                    $(".space-row").show();
+                }
+                else {
+                    $(".space-row").hide();
+                }                
+            });
+            $("#node-input-startbits").on("change", function (e) {
+                if (this.checked) {
+                    $(".startbits-row").show();
+                }
+                else {
+                    $(".startbits-row").hide();
+                }                
+            });
+            $("#node-input-stopbits").on("change", function (e) {
+                if (this.checked) {
+                    $(".stopbits-row").show();
+                }
+                else {
+                    $(".stopbits-row").hide();
+                }                
+            });
+            $("#node-input-syncbyte").on("change", function (e) {
+                if (this.checked) {
+                    $(".syncbyte-row").show();
+                }
+                else {
+                    $(".syncbyte-row").hide();
+                }                
+            });
+            $("#node-input-samplerate").on("change", function (e) {
+                if (this.checked) {
+                    $(".samplerate-row").show();
+                }
+                else {
+                    $(".samplerate-row").hide();
+                }                
+            });
+            $("#node-input-repeat").on("change", function (e) {
+                if (this.checked) {
+                    $(".repeat-row").show();
+                }
+                else {
+                    $(".repeat-row").hide();
+                }                
+            });
+
+        }
+        })
+</script>
+
+<script type="text/html" data-template-name="send">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-baudmode"><i class="icon-tag"></i> Baudmode</label>
+        <input type="text" id="node-input-baudmode" placeholder="rtty/0-1200/tdd" text="100" >
+    </div>
+    <div class="form-row">
+        <label for="node-input-sendletternum" style="width:70%;">Send letter number</label>  
+        <input type="checkbox" id="node-input-sendletternum" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endchar"><i class="icon-tag"></i> End character</label>
+        <input type="text" id="node-input-endchar" placeholder="Uniqe ASCII Character" text="*" >
+    </div>
+    <div class="form-row">
+        <label for="node-input-autocarrier" style="width:70%;">Autocarrier</label>  
+        <input type="checkbox" id="node-input-autocarrier" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-inverted" style="width:70%;">Inverted</label>  
+        <input type="checkbox" id="node-input-inverted" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-bandwith" style="width:70%;">Bandwith</label>  
+        <input type="checkbox" id="node-input-bandwith" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row bandwith-row">
+        <label style="padding-top: 8px" for="node-input-bandwithval"><i class="fa fa-cog"></i> Level</label>
+        <input type="text" id="node-input-bandwithval" style="width:70%" placeholder="100">
+        <input type="hidden" id="node-input-bandwithval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-mark" style="width:70%;">Mark</label>  
+        <input type="checkbox" id="node-input-mark" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row mark-row">
+        <label style="padding-top: 8px" for="node-input-markval"><i class="fa fa-cog"></i> Level</label>
+        <input type="text" id="node-input-markval" style="width:70%" placeholder="Hz">
+        <input type="hidden" id="node-input-markval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-space" style="width:70%;">Space</label>  
+        <input type="checkbox" id="node-input-space" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row space-row">
+        <label style="padding-top: 8px" for="node-input-spaceval"><i class="fa fa-cog"></i> Level</label>
+        <input type="text" id="node-input-spaceval" style="width:70%" placeholder="Hz">
+        <input type="hidden" id="node-input-spaceval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-startbits" style="width:70%;">Start bits</label>  
+        <input type="checkbox" id="node-input-startbits" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row startbits-row">
+        <label style="padding-top: 8px" for="node-input-startbitsval"><i class="fa fa-cog"></i> </label>
+        <input type="text" id="node-input-startbitsval" style="width:70%" placeholder="n">
+        <input type="hidden" id="node-input-startbitsval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-stopbits" style="width:70%;">Stop bits</label>  
+        <input type="checkbox" id="node-input-stopbits" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row stopbits-row">
+        <label style="padding-top: 8px" for="node-input-stopbitsval"><i class="fa fa-cog"></i></label>
+        <input type="text" id="node-input-stopbitsval" style="width:70%" placeholder="n">
+        <input type="hidden" id="node-input-stopbitsval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-invertstartstop" style="width:70%;">Invert start & stop</label>  
+        <input type="checkbox" id="node-input-inSecondsvertstartstop" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-syncbyte" style="width:70%;">Sync byte</label>  
+        <input type="checkbox" id="node-input-syncbyte" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row syncbyte-row">
+        <label style="padding-top: 8px" for="node-input-syncbyteval"><i class="fa fa-cog"></i> Byte</label>
+        <input type="text" id="node-input-syncbyteval" style="width:70%" placeholder="0xAA">
+        <input type="hidden" id="node-input-syncbyteval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-quiet" style="width:70%;">Quiet</label>  
+        <input type="checkbox" id="node-input-quiet" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-samplerate" style="width:70%;">Sample Rate</label>  
+        <input type="checkbox" id="node-input-samplerate" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row samplerate-row">
+        <label style="padding-top: 8px" for="node-input-samplerateval"><i class="fa fa-cog"></i> Rate:</label>
+        <input type="text" id="node-input-samplerateval" style="width:70%" placeholder="0xAA">
+        <input type="hidden" id="node-input-samplerateval">
+    </div>
+    <div class="form-row">
+        <label for="node-input-floatsamples" style="width:70%;">Float Samples</label>  
+        <input type="checkbox" id="node-input-floatsamples" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row">
+        <label class="fa fa-spinner" for="node-input-repeat" style="width:70%;"> Repeat</label>  
+        <input type="checkbox" id="node-input-repeat" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row repeat-row">
+        <label style="padding-top: 8px" for="node-input-repeatdelay"><i class="fa fa-clock-o"></i> Delay</label>
+        <input type="text" id="node-input-repeatdelay" style="width:70%" placeholder="ms">
+        <input type="hidden" id="node-input-repeatdelay">
+        <label style="padding-top: 8px" for="node-input-repeatxtimes"><i class="fa fa-times"></i> Times </label>
+        <input type="text" id="node-input-repeatxtimes" style="width:70%" placeholder="Number of times to repeat(eg. 2)">
+        <input type="hidden" id="node-input-repeatxtimes">
+
+
+    </div>
+
+</script>
+<script type="text/html" data-help-name="send">
+    <p>Node for sending data via the sound card </p>
+
+
+        <h3><strong>Input</strong></h3>
+       <p> msg.payload should be a string</p>
+       
+</script> 

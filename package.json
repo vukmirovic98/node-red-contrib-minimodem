@@ -1,0 +1,27 @@
+{
+  "name": "node-red-contrib-minimodem",
+  "version": "0.0.1",
+  "description": "A node-red node to gather information about the statistics of COVID-19 (Corona) virus.",
+  "dependencies": {
+    "sleep-promise": "^8.0.1"
+  },
+  "node-red": {
+    "nodes": {
+      "send": "send.js",
+      "listen": "listen.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "minimodem",
+    "sound",
+    "communication"
+  ],
+  "homepage": "https://github.com/vukmirovic98/node-red-contrib-minimodem/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vukmirovic98/node-red-contrib-minimodem.git"
+  },
+  "author": "Nemanja Vukmirovic",
+  "license": "Apache-2.0"
+}
