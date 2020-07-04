@@ -12,6 +12,12 @@ The node was originaly developed on Manjaro, and it worked perfectly.
 So i wanted to test it on the Raspberry PI 4. 
 For the RPI (Raspberry Pi OS) you would need to setup pulseaudio and set it on boot.
 <a href="https://raspberrypi.stackexchange.com/questions/639/how-to-get-pulseaudio-running/44767#44767" target="_blank"> You can follow this stackexchange answer</a>
+
+To install the node open pallet manager and search for
+
+npm install node-red-contrib-minimodem
+
+
 ## Nodes
 Listen Node - Node for receiving/listening for audio to decode to text.
 Send Node - Node for converting msg.payload to audio, and playing the audio.
