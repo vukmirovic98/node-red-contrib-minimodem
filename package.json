@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-minimodem",
   "version": "0.0.1",
-  "description": "A node-red node to gather information about the statistics of COVID-19 (Corona) virus.",
+  "description": "A node red node for text (de)coding to audio.",
   "dependencies": {
     "sleep-promise": "^8.0.1"
   },
