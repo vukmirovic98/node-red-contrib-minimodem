@@ -14,9 +14,9 @@ For the RPI (Raspberry Pi OS) you would need to setup pulseaudio and set it on b
 <a href="https://raspberrypi.stackexchange.com/questions/639/how-to-get-pulseaudio-running/44767#44767" target="_blank"> You can follow this stackexchange answer</a>
 
 To install the node open pallet manager and search for
-
-npm install node-red-contrib-minimodem
-
+``
+ node-red-contrib-minimodem
+``
 
 ## Nodes
 Listen Node - Node for receiving/listening for audio to decode to text.
